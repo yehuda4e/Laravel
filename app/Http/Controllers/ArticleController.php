@@ -31,16 +31,42 @@ class ArticleController extends Controller
      * Show the article.
      * 
      * @param  string $slug [the article slug]
-     * @return Illuminate\Foundation\Http\response|Exeption
+     * @return Illuminate\Foundation\Http\response
      */
     public function show($slug) {
     	$categories = Category::where('id', '!=', 1)->get();
-    	$article = Article::whereSlug($slug)->first();
+    	$article = Article::whereSlug(urldecode($slug))->first();
     	if ($article) {
-	    	Redis::incr("article.$article->id.views");
+            $this->incr("article", $article->id); 
 	    	return view('article.show', compact('article', 'categories'));
 	    }
 	    return abort(404);
+    }
+
+    /**
+     * Display the specified category with the articles that associated with it.
+     * 
+     * @param  string $name [category name]
+     * @return Illuminate\Foundation\Http\response
+     */
+    public function category($name) {
+        $categories = Category::where('id', '!=', 1)->get();
+        $category = Category::whereName($name)->with('articles')->first();
+
+        return view('article.category', compact('category', 'categories'));
+    }
+
+    /**
+     * Display all the articles that containe the specified tag.
+     * 
+     * @param  string $tag [tag name]
+     * @return Illuminate\Foundation\Http\response
+     */
+    public function tag($tag) {
+        $categories = Category::where('id', '!=', 1)->get();
+        $articles = Article::where('tags', 'like', "%{$tag}%")->paginate(10);
+
+        return view('article.tag', compact('articles', 'categories', 'tag'));
     }
 
     /**
@@ -48,7 +74,7 @@ class ArticleController extends Controller
      * 
      * @param  Request $request 
      * @param  Article $article 
-     * @return null
+     * @return Illuminate\Foundation\Http\response
      */
     public function comment(Request $request, Article $article) {
     	$this->validate($request, [

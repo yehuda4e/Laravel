@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model
 {
+	protected $fillable = ['subject', 'slug', 'keywords', 'content', 'category_id'];
 	public $perPage = 5;
 
 	public function user() {
@@ -19,4 +20,5 @@ class Article extends Model
     public function comments() {
     	return $this->morphMany(Comment::class, 'commentable');
     }
+
 }

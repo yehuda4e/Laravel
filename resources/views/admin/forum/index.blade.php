@@ -4,7 +4,7 @@
 
 {{ Session::set('header', 'Forums') }}
 <div class="row">
-	<div class="col-md-12">
+	<div class="col-md-9">
 		<a href="{{ url('admin/forum/create') }}" class="btn btn-lg btn-primary" style="float:right">New Forum</a>
 		<table class="table table-striped">
 		<thead>

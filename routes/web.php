@@ -28,7 +28,8 @@ Route::post('topic/{topic}/comment', 'TopicController@comment');
 
 Route::group([
 	'prefix' => 'admin',
-	'namespace' => 'Admin'], function() {
+	'namespace' => 'Admin',
+	'middleware' => 'auth'], function() {
 
 	Route::get('/', 'AdminController@index');
 	Route::resource('forum', 'ForumController');
@@ -39,6 +40,8 @@ Route::group([
 	Route::resource('forumcat', 'ForumCategoryController');
 });
 
+Route::get('article/cat/{name}', 'ArticleController@category');
+Route::get('article/tag/{tag}', 'ArticleController@tag');
 Route::post('article/{article}/comment', 'ArticleController@comment');
 Route::get('{article}', 'ArticleController@show');
 

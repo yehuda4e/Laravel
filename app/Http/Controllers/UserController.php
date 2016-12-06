@@ -13,14 +13,31 @@ class UserController extends Controller
         $this->middleware('auth', ['exept' => 'show']);
     }
 
+    /**
+     * Display the specified user.
+     *  
+     * @param  User   $user 
+     * @return Illuminate\Foundation\Http\response
+     */
     public function show(User $user) {
     	return view('user.show', compact('user'));
     }
 
+    /**
+     * Display the general settings form.
+     * 
+     * @return Illuminate\Foundation\Http\response
+     */
     public function general() {
     	return view('user.settings.general', ['user' => $this->user]);
     }
 
+    /**
+     * Update the general settings form.
+     * 
+     * @param  Request $request 
+     * @return Illuminate\Foundation\Http\response
+     */
     public function update(Request $request) {
     	$this->validate($request, [
     		'first_name' => 'alpha',
@@ -41,10 +58,21 @@ class UserController extends Controller
     	return back();
     }
 
+    /**
+     * Display the avatar form.
+     * 
+     * @return Illuminate\Foundation\Http\response
+     */
     public function avatar() {
         return view('user.settings.avatar', ['user' => $this->user]);
     }
 
+    /**
+     * Update the avatar.
+     * 
+     * @param  Request $request
+     * @return Illuminate\Foundation\Http\response
+     */
     public function updateAvatar(Request $request) {
         $this->validate($request, [
             'avatar' => 'active_url',
@@ -59,11 +87,22 @@ class UserController extends Controller
         return back();
     }  
 
+    /**
+     * Display the change password form.
+     * 
+     * @return Illuminate\Foundation\Http\response
+     */
     public function password() {
          return view('user.settings.password', ['user' => $this->user]);
      } 
 
-     public function updatePassword(Request $request) {
+     /**
+      * Update and chnage the password.
+      * 
+      * @param  Request $request 
+      * @return Illuminate\Foundation\Http\response
+      */
+    public function updatePassword(Request $request) {
         $this->validate($request, [
             'old_password'  => 'required',
             'password'      => 'required|confirmed|min:6|different:old_password',
@@ -76,14 +115,25 @@ class UserController extends Controller
 
         $this->user->update(['password' => bcrypt($request->password)]);
         return back();
-     }
+    }
 
-     public function signature() {
-         return view('user.settings.signature', ['user' => $this->user]);
-     }
+    /**
+     * Display the signature page.
+     * 
+     * @return Illuminate\Foundation\Http\response
+     */
+    public function signature() {
+        return view('user.settings.signature', ['user' => $this->user]);
+    }
 
-     public function updateSign(Request $request) {
-         $this->user->update(['signature' => $request->signature]);
-         return back();
-     }
+    /**
+     * Update the signature.
+     * 
+     * @param  Request $request
+     * @return Illuminate\Foundation\Http\response
+     */
+    public function updateSign(Request $request) {
+        $this->user->update(['signature' => $request->signature]);
+        return back();
+    }
 }

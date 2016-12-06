@@ -15,13 +15,13 @@ class TopicController extends Controller
 	}
 
     /**
-     * Show the topic.
+     * Show the specified topic.
      *    
      * @param  Topic  $topic 
-     * @return Illuminate\Support\Facades\Response
+     * @return Illuminate\Foundation\Http\response 
      */
     public function show(Topic $topic) {
-    	Redis::incr("topic.$topic->id.views");
+    	$this->incr("topic", $topic->id);
     	return view('topic.show', compact('topic'));
     }
 
@@ -29,7 +29,7 @@ class TopicController extends Controller
      * Comment on the topic.
      * @param  Request $request
      * @param  Topic   $topic
-     * @return null           
+     * @return Illuminate\Foundation\Http\response           
      */
     public function comment(Request $request, Topic $topic) {
     	$this->validate($request, [
@@ -64,7 +64,7 @@ class TopicController extends Controller
      * 
      * @param  int  $forumId [forum ID]
      * @param  Request $request 
-     * @return null
+     * @return Illuminate\Foundation\Http\response 
      */
     public function store($forumId, Request $request) {
         $this->validate($request, [
@@ -80,5 +80,18 @@ class TopicController extends Controller
         $topic->save();
 
         return redirect('topic/'.$topic->id.'/'.$topic->subject);
+    }
+
+    /**
+     * Delete the specified topic.
+     * 
+     * @param  Topic  $topic
+     * @return Illuminate\Foundation\Http\response
+     */
+    public function destroy(Topic $topic) {
+        // $topic->delete();
+        // Redis::del('topic.'.$topic->id.'.views');
+        // 
+        // return redirect('forum/'.$topic->forum->id.'/'.urlencode($topic->forum->name));
     }
 }

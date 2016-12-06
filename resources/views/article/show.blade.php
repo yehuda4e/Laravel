@@ -19,12 +19,17 @@ $(document).ready(function() {
 		<div class="panel panel-default">
 			<div class="panel-heading"><h3 class="panel-title">{{ $article->subject }}</h3></div>
 			<div class="panel-body">
-				{{ $article->content }}
+				{!! nl2br($article->content) !!}
 				<hr>
-				<i class="fa fa-user"></i> {!! $article->user->profile() !!} 
-				<i class="fa fa-clock-o"></i> {{ $article->created_at->diffForHumans() }} 
-				<i class="fa fa-eye"></i> {{ Redis::get("article.$article->id.views") }} 
-				<i class="fa fa-tags"></i> <span class="label label-default"><a href="">PHP</a></span> <span class="label label-default">SQL</span>
+				<i class="fa fa-user"></i> {!! $article->user->profile() !!} |
+				<i class="fa fa-clock-o"></i> {{ $article->created_at->diffForHumans() }} |
+				<i class="fa fa-eye"></i> {{ Redis::get("article.$article->id.views") }} |
+				<i class="fa fa-tags"></i> 
+				@if ($article->tags)
+				@foreach(explode(',', $article->tags) as $tag)
+				<span class="label label-default"><a href="{{ url('article/tag/'.trim($tag)) }}">{{ trim($tag) }}</a></span> 
+				@endforeach
+				@endif
 			</div>
 		</div>
 
@@ -34,7 +39,7 @@ $(document).ready(function() {
 			@foreach ($article->comments()->latest()->get() as $comment)
 				<li class="list-group-item">
 					<div class="row">
-						<div class="col-md-1">{!! $comment->user->getAvatar('profile-cir') !!}</div>
+						<div class="col-md-1" style="padding-left: 25px;">{!! $comment->user->getAvatar('profile-cir') !!}</div>
 						<div class="col-md-11">{{ $comment->body }}</div>
 					</div>
 					<div class="row">
@@ -60,10 +65,4 @@ $(document).ready(function() {
 	</div>
 	@include('article._category')
 </div>
-
-<!-- 
-add tags
-add error to input
-make ajax to comments
- -->
 @stop

@@ -16,41 +16,45 @@ class ForumController extends Controller
      */
     public function index()
     {
-        $forums = Forum::paginate(10);
+        $forums = Forum::orderBy('id')->paginate(10);
         return view('admin.forum.index', compact('forums'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new forum.
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        //
+        $categories = ForumCategory::all();
+        return view('admin.forum.create', compact('categories'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  Request  $request
+     * @param  Forum $forum
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, Forum $forum)
     {
-        //
+        $this->validate($request, [
+            'name'          => 'required|min:3|max:30|unique:forums',
+            'description'   => 'max:60',
+            'category'      => 'required|exists:forum_categories,id'
+        ]);
+
+        $forum->create([
+            'name'          => $request->name,
+            'description'   => $request->description,
+            'category'      => $request->category
+        ]);
+
+        return redirect()->route('forum.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified forum.
@@ -73,9 +77,9 @@ class ForumController extends Controller
     public function update(Request $request, Forum $forum)
     {
         $this->validate($request, [
-            'name'          => 'required|unique:forums|max:30',
+            'name'          => 'required|unique:forums|max:30|min:3',
             'description'   => 'max:60',
-            'category'      => 'required|integer'
+            'category'      => 'required|exists:forum_categories,id'
         ]);
 
         $forum->update($request->all());
@@ -86,11 +90,13 @@ class ForumController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Forum  $forum
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Forum $forum)
     {
-        //
+        $forum->delete();
+
+        return back();
     }
 }

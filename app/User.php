@@ -41,6 +41,11 @@ class User extends Authenticatable
         return $this->hasMany(Article::class);
     }
 
+    /**
+     * Check if user assign name, and if so display it.
+     * 
+     * @return string|boolean [if the user assign first name of last name it'll show it. If not false will return]
+     */
     public function name() {
         if ($this->first_name && $this->last_name) {
             return $this->first_name.' '.$this->last_name;
@@ -55,10 +60,21 @@ class User extends Authenticatable
         return false;
     }
 
+    /**
+     * Display link to user profile with the group style.
+     * 
+     * @return string
+     */
     public function profile() {
         return '<a href="'.url('user/'.$this->id.'/'.$this->username).'" style="color:'.$this->group->color.'">'.$this->username.'</a>';
     }
 
+    /**
+     * Display the user avatar.
+     * 
+     * @param  string $classes [add classes to the img if necessary]
+     * @return string          [avatar images]
+     */
     public function getAvatar($classes = '') {
         // If the user havent set yet his profile picure, then we use his Gravatar avatar. 
         // And if he dosnt have a Gravatar avatar, then Gravatar genarate him a new one.

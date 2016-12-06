@@ -1,0 +1,121 @@
+#header{
+	border:1px solid #ddd;
+	margin-bottom:20px;
+}
+		
+.navbar-profile {
+	border-radius:0;
+	margin-bottom:0;
+	border:none;
+    font-family: 'Open Sans Condensed', sans-serif, sans-serif;
+}
+    
+.navbar-brand-profile {
+	width:160px;
+	height:160px;
+	float:left;
+	padding:0;
+	margin-top:-130px;
+	overflow:hidden;
+	border:3px solid #eee;
+	margin-left:15px;
+	background:#333;
+	text-align:center;
+	line-height:160px;
+	color:#fff !important;
+	font-size:2em;
+    -webkit-transition:  all 0.3s ease-in-out;
+  	-moz-transition: all 0.3s ease-in-out;
+  	-o-transition:  all 0.3s ease-in-out;
+  	transition: all 0.3s ease-in-out ;
+}
+	
+	
+.site-name{
+	color: #fff;
+	font-size: 2.4em;
+	float: left;
+	margin-top: -65px !important;
+	margin-left: 15px;
+    font-family: 'Open Sans Condensed', sans-serif, sans-serif;
+}	
+
+.site-description{
+	color:#fff;
+	font-size:1.3em;
+	float:left;
+	margin-top:-30px !important;
+	margin-left:15px;
+}
+	
+.main-menu{
+	position:absolute;
+	left:190px;
+}
+	
+.slider{
+	max-height:360px;
+	overflow:hidden;
+}
+	
+.cover {
+	background-size: cover;
+	background-position: top center;
+	min-height: 320px;
+}
+
+
+@media (max-width: 768px) {
+	.navbar-brand-profile{
+	    max-width: 100px;
+		max-height:100px;
+		float:left;
+		margin-top:-65px;
+		margin-left:15px;
+		-webkit-transition:  all 0.3s ease-in-out;
+	  	-moz-transition: all 0.3s ease-in-out;
+	  	-o-transition:  all 0.3s ease-in-out;
+	  	transition: all 0.3s ease-in-out ;
+	}
+	  
+	.navbar{
+		border-radius:0;
+		margin-bottom:0;
+		border:none;
+	}
+		
+	.main-menu{
+		left:0;
+		position:relative;
+	}
+
+
+}
+
+@media (max-width: 490px) {
+	.site-name{
+		color:#fff;
+		font-size:1.5em;
+		float:left;
+		line-height:20px;
+		margin-top:-100px !important;
+		margin-left:125px;
+	}	
+	.site-description{
+		color:#fff;
+		font-size:1.3em;
+		float:left;
+		margin-top:-80px !important;
+		margin-left:125px;
+	}
+}
+
+.btn-nav-pro {
+	margin-left: -10px;
+	margin-top: -5px;
+	padding: 5px;
+}
+
+.navbar-nav-pro > li > a {
+	line-height: 30px;
+}

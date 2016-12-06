@@ -2,8 +2,8 @@
 
 @section('content')
 <ol class="breadcrumb">
-  <li><a href="{{ url('category/'.$topic->forum->cat->id.'/'.$topic->forum->cat->name) }}">{{ $topic->forum->cat->name }}</a></li>
-  <li><a href="{{ url('forum/'.$topic->forum->id.'/'.$topic->forum->name) }}">{{ $topic->forum->name }}</a></li>
+  <li><a href="{{ url('category/'.$topic->forum->cat->id.'/'.urlencode($topic->forum->cat->name)) }}">{{ $topic->forum->cat->name }}</a></li>
+  <li><a href="{{ url('forum/'.$topic->forum->id.'/'.urlencode($topic->forum->name)) }}">{{ $topic->forum->name }}</a></li>
   <li class="active">{{ $topic->subject }}</li>
 </ol>
 
@@ -39,7 +39,7 @@
 						{!! $topic->user->getAvatar('img-thumbnail') !!}
 						{!! $topic->user->profile() !!}<br>
 						<small>{{ $topic->user->title }}</small><br>
-						{{ $comment->user->details->sex ?? 'none' }}
+						{{ $topic->user->sex }}
 					</div>
 				</div>
 			</div>
@@ -74,8 +74,8 @@
 					<div class="col-md-2 text-center" style="border-left: 1px solid #eee;margin-top:-15px;margin-bottom: -15px;padding-top: 10px">
 						{!! $comment->user->getAvatar('img-thumbnail') !!}
 						{!! $comment->user->profile() !!}<br>
-						<small>{{ $topic->user->title }}</small><br>
-						{{ $comment->user->details->sex ?? 'none' }}
+						<small>{{ $comment->user->title }}</small><br>
+						{{ $comment->user->sex }}
 					</div>
 				</div>
 			</div>

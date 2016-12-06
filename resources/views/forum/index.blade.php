@@ -14,7 +14,7 @@
 					<div class="col-xs-2 col-md-1 text-right"><span class="fa fa-envelope fa-4x"></span></div>
 					<div class="col-xs-10 col-md-7">
 						<div class="row">
-							<h4><a href="{{ url('forum/'.$forum->id.'/'.$forum->name) }}"><strong>{{ $forum->name }}</strong></a></h4>
+							<h4><a href="{{ url('forum/'.$forum->id.'/'.urlencode($forum->name)) }}"><strong>{{ $forum->name }}</strong></a></h4>
 						</div>
 						<div class="row">
 							<small>{{ $forum->description }}</small>
@@ -33,7 +33,7 @@
 					<div class="hidden-xs col-md-3">
 						@if($forum->last())
 							{!! $forum->last()->user->getAvatar('profile-last-com') !!}
-							<a href="{{ url('topic/'.$forum->subjectOrComment()->id.'/'.$forum->subjectOrComment()->subject) }}">{{ $forum->subjectOrComment()->subject }}</a><br>
+							<a href="{{ url('topic/'.$forum->subjectOrComment()->id.'/'.urlencode($forum->subjectOrComment()->subject)) }}">{{ $forum->subjectOrComment()->subject }}</a><br>
 							By {!! $forum->last()->user->profile() !!}<br>
 							<span class="text-muted">{{ $forum->last()->created_at->diffForHumans() }}</span>
 						@else

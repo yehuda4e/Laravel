@@ -11,6 +11,10 @@
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
+// Profile
+@import url(https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,400,700);
+@import "components/profile";
+
 body {
 	padding-top: 70px;
 }

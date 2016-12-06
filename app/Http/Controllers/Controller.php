@@ -7,6 +7,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redis;
 
 class Controller extends BaseController
 {
@@ -29,5 +30,16 @@ class Controller extends BaseController
 
             return $next($request);
         });
+    }
+
+    /**
+     * Increase the the view by 1.
+     * 
+     * @param  string $table [table name]
+     * @param  int $id [id of the specific column]
+     * @return Illuminate\Support\Facades\Redis        
+     */
+    public function incr($table, $id) {
+        return Redis::incr("{$table}.{$id}.views");
     }
 }
