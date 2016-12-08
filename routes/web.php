@@ -4,7 +4,6 @@ Auth::routes();
 
 Route::get('/', 'ArticleController@index');
 
-
 Route::get('user/settings', 'UserController@general');
 Route::patch('user/settings', 'UserController@update');
 Route::get('user/settings/avatar', 'UserController@avatar');
@@ -29,7 +28,7 @@ Route::post('topic/{topic}/comment', 'TopicController@comment');
 Route::group([
 	'prefix' => 'admin',
 	'namespace' => 'Admin',
-	'middleware' => 'auth'], function() {
+	'middleware' => 'access:admin'], function() {
 
 	Route::get('/', 'AdminController@index');
 	Route::resource('forum', 'ForumController');
