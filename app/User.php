@@ -41,8 +41,23 @@ class User extends Authenticatable
         return $this->hasMany(Article::class);
     }
 
+    /**
+     * Check if the user has admin panel authorization.
+     * 
+     * @return boolean 
+     */
     public function isAdmin() {
         return (json_decode($this->group->permissions))->admin;
+    }
+
+    public function can($index, $key = 'null') {
+        $permission = json_decode($this->group->permissions);
+
+        if (isset($key) && isset($index)) {
+            return $permission->{$index}->{$key};
+        }
+
+        return $permission->{$index};   
     }
 
     /**

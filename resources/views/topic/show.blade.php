@@ -97,8 +97,24 @@
 					<button class="btn btn-primary">Post</button>
 				</form>
 			@endif
-			</div>		
+			</div>	
 		</div>
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<form action="" method="POST" class="form-horizontal">
+					{{ csrf_field() }}
+					<label for="options" class="control-label col-md-1">Options</label>
+					<div class="col-md-3">
+						<select name="options" id="options" class="form-control">
+							<option value="close">Close</option>
+							<option value="Pin">Pin the topic</option>
+							<option value="delete">Delete this topic</option>
+						</select>
+					</div>
+					<button class="btn btn-warning">Excute</button>
+				</form>
+			</div>	
+		</div>			
 	</div>
 </div>
 @stop
