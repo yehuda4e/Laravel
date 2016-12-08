@@ -23,6 +23,7 @@ Route::get('topic/{forum}/create', 'TopicController@create');
 Route::post('topic/{forum}/store', 'TopicController@store');
 Route::get('topic/{topic}/{subject?}', 'TopicController@show');
 Route::post('topic/{topic}/comment', 'TopicController@comment');
+Route::post('topic/{topic}/change', 'TopicController@changeState');
 
 
 Route::group([
