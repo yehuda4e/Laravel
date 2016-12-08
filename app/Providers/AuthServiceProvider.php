@@ -13,7 +13,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy',
+        'App\Topic' => 'App\Policies\TopicPolicy',
     ];
 
     /**
@@ -25,6 +25,9 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        Gate::define('create-topic', function($user){
+            return json_decode($user->group->permissions)->topic->create;
+            // return $this->middleware(['access:topic,create']);
+        });
     }
 }

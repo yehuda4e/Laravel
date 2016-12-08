@@ -41,6 +41,10 @@ class User extends Authenticatable
         return $this->hasMany(Article::class);
     }
 
+    public function isAdmin() {
+        return (json_decode($this->group->permissions))->admin;
+    }
+
     /**
      * Check if user assign name, and if so display it.
      * 

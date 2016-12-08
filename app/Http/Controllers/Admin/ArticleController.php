@@ -45,7 +45,7 @@ class ArticleController extends Controller
     		'subject'	=> 'required|min:2|max:255|unique:articles',
     		'category'	=> 'required|exists:categories,id',
     		'slug'		=> 'min:2|max:255|unique:articles',
-    		'tags'	=> 'max:255',
+    		'tags'	    => 'max:255',
     		'content'	=> 'required'
     	]);
 
@@ -53,7 +53,7 @@ class ArticleController extends Controller
     		'subject'		=> $request->subject,
     		'category_id'	=> $request->category,
     		'slug'			=> $request->slug ?: $request->subject,
-    		'tags'		=> $request->tags,
+    		'tags'		    => $request->tags,
     		'content'		=> $request->content
     	]);
 
@@ -82,7 +82,8 @@ class ArticleController extends Controller
     	$this->validate($request, [
     		'subject' 	=> 'required|min:3|max:255|unique:articles,subject,'.$article->id,
     		'category'	=> 'required|exists:categories,id',
-    		'slug'		=> 'unique:articles',
+    		'slug'		=> 'unique:articles,slug,'.$article->id,
+            'tags'      => 'max:255',
     		'content'	=> 'required'
     	]);
 
@@ -90,7 +91,7 @@ class ArticleController extends Controller
     		'subject'		=> $request->subject,
     		'category_id'	=> $request->category,
     		'slug'			=> $request->slug ?: $request->subject,
-    		'tags'		=> $request->tags,
+    		'tags'		    => $request->tags,
     		'content'		=> $request->content
     	]);
 

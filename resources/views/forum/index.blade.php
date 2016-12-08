@@ -6,7 +6,7 @@
 	<div class="col-md-12">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h3 class="panel-title"><a href="/category/{{ $category->id }}/{{ $category->name }}">{{ $category->name }}</a></h3>
+				<h3 class="panel-title"><a href="/category/{{ $category->id }}/{{ urlencode($category->name) }}">{{ $category->name }}</a></h3>
 			</div>
 			@foreach ($category->forums as $forum)
 			<div class="panel-body">

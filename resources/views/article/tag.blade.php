@@ -5,7 +5,7 @@
 	<div class="col-md-8 col-md-offset-1">
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<h3 class="panel-title">Results for: {{$tag}} tag</h3>
+				<h3 class="panel-title">Results for: <strong>{{$tag}}</strong> tag</h3>
 			</div>
 			<div class="panel-body">
 				<table class="table table-bordered table-responsive">

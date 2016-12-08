@@ -1,7 +1,7 @@
 @extends('admin.app')
 
 @section('content')
-{{ Session::set('header', 'articles') }}
+{{ Session::set('header', 'Articles') }}
 <div class="row">
 	<div class="col-md-9">
 		<a href="{{ url('admin/article/create') }}" class="btn btn-lg btn-primary" style="float:right">New Article</a>

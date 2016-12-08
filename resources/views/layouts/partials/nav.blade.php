@@ -67,6 +67,9 @@
                                     <li>
                                         <a href="{{ url('user/'.Auth::id().'/'.Auth::user()->username) }}"><i class="fa fa-user"></i> Profile</a>
                                         <a href="{{ url('user/settings') }}"><i class="fa fa-cog"></i> Settings</a>
+                                        @if (auth()->user()->isAdmin())
+                                        <a href="{{ url('admin') }}" target="_blank"><i class="fa fa-lock"></i> Admin Panel</a>
+                                        @endif
                                         <a href="{{ url('/logout') }}" onclick="event.preventDefault();document.getElementById('logout-form').submit();"><i class="fa fa-sign-out"></i> Logout</a>
 
                                         <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">

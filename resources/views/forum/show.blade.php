@@ -21,7 +21,9 @@
 			<div class="panel-footer">
 				<div class="row">
 					<div class="col-md-10">{{ $forum->topics()->paginate()->links() }}</div>
+					@can('create-topic')
 					<div class="col-md-2 text-right"><a href="{{ url('topic/'.$forum->id.'/create') }}" class="btn btn-primary">New Topic</a></div>
+					@endcan
 				</div>
 			</div>
 		</div>
