@@ -26,6 +26,30 @@ class TopicController extends Controller
     }
 
     /**
+     * Change the topic state close/open/pin/delete.
+     * 
+     * @param  Request $request 
+     * @param  Topic   $topic   
+     * @return Illuminate\Foundation\Http\response
+     */
+    public function changeState(Request $request, Topic $topic) {
+        if ($request->options == "close") {
+            $topic->lock = true;
+            $topic->save(); 
+        } elseif ($request->options == "open") {
+            $topic->lock = false;
+            $topic->save();
+        } elseif ($request->options == "pin") {
+            $topic->pinned = true;
+            $topic->save();            
+        } elseif ($request->options == "delete") {
+            $topic->delete();
+        }
+
+        return redirect('forum/'.$topic->forum->id.'/'.urlencode($topic->forum->name));
+    }
+
+    /**
      * Comment on the topic.
      * @param  Request $request
      * @param  Topic   $topic
