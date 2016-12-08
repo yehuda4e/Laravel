@@ -39,15 +39,18 @@
 
 			<h4 class="col-md-12">Permissions</h4>
 			<div class="form-group">
-				<label for="permissions" class="control-label col-md-1">Admin panel access</label>
+				<label class="control-label col-md-1">Admin panel</label>
 			
 				<div class="col-md-8">
+					<label class="control-label col-md-1">Access</label>
+					<div class="col-md-2">
 					<label class="radio-inline">
-					  <input type="radio" name="permissions[admin]" value="1" {{ ($permission['admin'] == true) ? 'checked' : '' }}> yes
-					</label>
-					<label class="radio-inline">
-					  <input type="radio" name="permissions[admin]" value="0" {{ ($permission['admin'] == false) ? 'checked' : '' }}> no
-					</label>		
+						  <input type="radio" name="permissions[admin]" value="1" {{ ($permission['admin'] == true) ? 'checked' : '' }}> yes
+						</label>
+						<label class="radio-inline">
+						  <input type="radio" name="permissions[admin]" value="0" {{ ($permission['admin'] == false) ? 'checked' : '' }}> no
+						</label>		
+					</div>
 				</div>
 			</div>
 
@@ -98,6 +101,54 @@
 				</div>
 
 			</div>
+
+			<div class="form-group">
+
+				<label class="control-label col-md-1">Comments</label>
+
+				<div class="col-md-8">
+					<label for="create" class="control-label col-md-1">Create</label>
+					<div class="col-md-2">
+						<label class="radio-inline">
+						  <input type="radio" name="permissions[topic][create]" value="1" {{ ($permission['topic']['create'] == true) ? 'checked' : '' }}> yes
+						</label>
+						<label class="radio-inline">
+						  <input type="radio" name="permissions[topic][create]" value="0" {{ ($permission['topic']['create'] == false) ? 'checked' : '' }}> no
+						</label>	
+					</div>		
+
+					<label for="edit" class="control-label col-md-1">Edit</label>	
+					<div class="col-md-2">							
+						<label class="radio-inline">
+						  <input type="radio" name="permissions[topic][edit]" value="1" {{ ($permission['topic']['edit'] == true) ? 'checked' : '' }}> yes
+						</label>
+						<label class="radio-inline">
+						  <input type="radio" name="permissions[topic][edit]" value="0" {{ ($permission['topic']['edit'] == false) ? 'checked' : '' }}> no
+						</label>
+					</div>		
+
+					<label for="close" class="control-label col-md-1">Close</label>	
+					<div class="col-md-2">							
+						<label class="radio-inline">
+						  <input type="radio" name="permissions[topic][edit]" value="1" {{ ($permission['topic']['edit'] == true) ? 'checked' : '' }}> yes
+						</label>
+						<label class="radio-inline">
+						  <input type="radio" name="permissions[topic][edit]" value="0" {{ ($permission['topic']['edit'] == false) ? 'checked' : '' }}> no
+						</label>
+					</div>	
+
+					<label for="delete" class="control-label col-md-1">Delete</label>	
+					<div class="col-md-2">							
+						<label class="radio-inline">
+						  <input type="radio" name="permissions[topic][edit]" value="1" {{ ($permission['topic']['edit'] == true) ? 'checked' : '' }}> yes
+						</label>
+						<label class="radio-inline">
+						  <input type="radio" name="permissions[topic][edit]" value="0" {{ ($permission['topic']['edit'] == false) ? 'checked' : '' }}> no
+						</label>
+					</div>														
+				</div>
+
+			</div>			
 
 			<div class="form-group">
 				<div class="col-md-9 text-center">

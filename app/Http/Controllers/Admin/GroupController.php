@@ -47,13 +47,13 @@ class GroupController extends Controller
         $this->validate($request, [
             'name'          => 'required|min:3|max:255|unique:groups,name,'.$group->id,
             'color'         => 'min:7|max:9',
-            //'permissions'   => 'required'
+            'permissions'   => 'required'
         ]);
 
         $group->update([
             'name'          => $request->name,
             'color'         => $request->color,
-           // 'permissions'   => $request->permissions
+            'permissions'   => json_encode($request->permissions)
         ]);
 
         return back();        
