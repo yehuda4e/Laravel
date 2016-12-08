@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Article extends Model
 {
-	protected $fillable = ['subject', 'slug', 'keywords', 'content', 'category_id'];
+	protected $fillable = ['subject', 'slug', 'tags', 'content', 'category_id'];
 	public $perPage = 5;
 
 	public function user() {
