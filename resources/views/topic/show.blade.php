@@ -110,6 +110,7 @@
 							<option value="close">Close</option>
 							<option value="open">Open</option>
 							<option value="pin">Pin the topic</option>
+							<option value="unpin">Unpin the topic</option>
 							<option value="delete">Delete this topic</option>
 						</select>
 					</div>

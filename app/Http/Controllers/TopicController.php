@@ -41,7 +41,10 @@ class TopicController extends Controller
             $topic->save();
         } elseif ($request->options == "pin") {
             $topic->pinned = true;
-            $topic->save();            
+            $topic->save();         
+        } elseif ($request->options == "unpin") {
+            $topic->pinned = false;
+            $topic->save();                  
         } elseif ($request->options == "delete") {
             $topic->delete();
         }
