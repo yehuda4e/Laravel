@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('js')
+<script src="{{ url('js/registerAJAX.js') }}"></script>
+@stop
+
 @section('content')
 <div class="container">
     <div class="row">
@@ -7,14 +11,15 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Register</div>
                 <div class="panel-body">
-                    <form class="form-horizontal" role="form" method="POST" action="{{ url('/register') }}">
+                    <form class="form-horizontal" role="form" id="registerForm" method="POST" action="{{ url('/register') }}">
                         {{ csrf_field() }}
 
-                        <div class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
+                        <div id="register-username" class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label for="username" class="col-md-4 control-label">Username</label>
 
                             <div class="col-md-6">
-                                <input id="username" type="text" class="form-control" name="username" value="{{ old('username') }}" required autofocus>
+                                <input id="username" type="text" class="form-control" name="username" value="{{ old('username') }}" placeholder="Choose username" required autofocus>
+                                <span class="help-block"><strong id="username-error"></strong></span>
 
                                 @if ($errors->has('username'))
                                     <span class="help-block">
@@ -24,11 +29,12 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                        <div id="register-email" class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
                             <label for="email" class="col-md-4 control-label">E-Mail Address</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
+                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Enter email" required>
+                                <span class="help-block"><strong id="email-error"></strong></span>
 
                                 @if ($errors->has('email'))
                                     <span class="help-block">
@@ -38,11 +44,12 @@
                             </div>
                         </div>
 
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
+                        <div id="register-password" class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
                             <label for="password" class="col-md-4 control-label">Password</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
+                                <input id="password" type="password" class="form-control" name="password" placeholder="Choose password" required>
+                                <span class="help-block"><strong id="password-error"></strong></span>
 
                                 @if ($errors->has('password'))
                                     <span class="help-block">
@@ -56,7 +63,7 @@
                             <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" placeholder="Confirm your password" required>
                             </div>
                         </div>
 
