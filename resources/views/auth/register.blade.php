@@ -3,10 +3,8 @@
 @section('js')
 <script>
 $(document).ready(function() {
-    var registerForm = $("#registerForm");
-    registerForm.submit(function(e){
+    $("#registerForm").submit(function(e){
         e.preventDefault();
-        var formData = registerForm.serialize();
         $('#username-error').html("");
         $('#email-error').html("");
         $('#password-error').html("");
@@ -15,9 +13,9 @@ $(document).ready(function() {
         $("#register-password").removeClass("has-error");
 
         $.ajax({
-            url:'/register',
-            type:'POST',
-            data:formData,
+            url: '/register',
+            type: 'POST',
+            data: $('#registerForm').serialize(),
             success:function (data){
                 location.reload(true);
             },
