@@ -33,21 +33,30 @@ class TopicController extends Controller
      * @return Illuminate\Foundation\Http\response
      */
     public function changeState(Request $request, Topic $topic) {
-        if ($request->options == "close") {
-            $topic->lock = true;
-            $topic->save(); 
-        } elseif ($request->options == "open") {
-            $topic->lock = false;
-            $topic->save();
-        } elseif ($request->options == "pin") {
-            $topic->pinned = true;
-            $topic->save();         
-        } elseif ($request->options == "unpin") {
-            $topic->pinned = false;
-            $topic->save();                  
-        } elseif ($request->options == "delete") {
-            $topic->delete();
+        foreach ($request->options as $option) {
+            switch ($option) {
+                case 'close':
+                    $topic->lock = true;
+                    $topic->save(); 
+                    break;
+                case 'open':
+                    $topic->lock = false;
+                    $topic->save();              
+                    break;
+                case 'pin':
+                    $topic->pinned = true;
+                    $topic->save(); 
+                    break;
+                case 'unpin':
+                    $topic->pinned = false;
+                    $topic->save(); 
+                    break;
+                case 'delete':
+                    $this->destory($topic);
+                    break;
+            }
         }
+
 
         return redirect('forum/'.$topic->forum->id.'/'.urlencode($topic->forum->name));
     }
@@ -116,9 +125,8 @@ class TopicController extends Controller
      * @return Illuminate\Foundation\Http\response
      */
     public function destroy(Topic $topic) {
-        // $topic->delete();
-        // Redis::del('topic.'.$topic->id.'.views');
-        // 
-        // return redirect('forum/'.$topic->forum->id.'/'.urlencode($topic->forum->name));
+        $topic->delete();
+        Redis::del('topic.'.$topic->id.'.views');
+        
     }
 }

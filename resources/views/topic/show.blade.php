@@ -39,7 +39,8 @@
 						{!! $topic->user->getAvatar('img-thumbnail') !!}
 						{!! $topic->user->profile() !!}<br>
 						<small>{{ $topic->user->title }}</small><br>
-						{{ $topic->user->sex }}
+						<strong>Sex:</strong> {{ $topic->user->sex }} <br>
+						<strong>Joined:</strong> {{ $topic->user->created_at->diffForHumans() }}
 					</div>
 				</div>
 			</div>
@@ -75,7 +76,8 @@
 						{!! $comment->user->getAvatar('img-thumbnail') !!}
 						{!! $comment->user->profile() !!}<br>
 						<small>{{ $comment->user->title }}</small><br>
-						{{ $comment->user->sex }}
+						Sex: {{ $comment->user->sex }} <br>
+						Joined: {{ $comment->user->created_at->diffForHumans() }}
 					</div>
 				</div>
 			</div>
@@ -100,13 +102,13 @@
 			</div>	
 		</div>
 		<div class="panel panel-default">
-			<div class="panel-heading"><strong>Manager Options</strong></div>
+			<div class="panel-heading"><strong>Moderator Options</strong></div>
 			<div class="panel-body">
 				<form action="{{ url('topic/'.$topic->id.'/change') }}" method="POST" class="form-horizontal">
 					{{ csrf_field() }}
 					<label for="options" class="control-label col-md-1">Options</label>
 					<div class="col-md-3">
-						<select name="options" id="options" class="form-control">
+						<select name="options[]" id="options" class="form-control">
 							<option value="close">Close</option>
 							<option value="open">Open</option>
 							<option value="pin">Pin the topic</option>
