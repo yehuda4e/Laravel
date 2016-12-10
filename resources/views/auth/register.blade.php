@@ -18,12 +18,12 @@ $(document).ready(function() {
             url:'/register',
             type:'POST',
             data:formData,
-            success:function(data){
+            success:function (data){
                 location.reload(true);
             },
             error: function (data) {
                 console.log(data.responseText);
-                var obj = jQuery.parseJSON( data.responseText );
+                var obj = jQuery.parseJSON(data.responseText);
                if(obj.username){
                     $("#register-username").addClass("has-error");
                     $('#username-error').html( obj.username );
