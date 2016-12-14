@@ -2,7 +2,7 @@
 
 @section('js')
 <script>
-$(document).ready(function() {
+$(function() {
     $("#registerForm").submit(function(e){
         e.preventDefault();
         $('#username-error').html("");
@@ -51,18 +51,14 @@ $(document).ready(function() {
                     <form class="form-horizontal" role="form" id="registerForm" method="POST" action="{{ url('/register') }}">
                         {{ csrf_field() }}
 
-                        <div id="register-username" class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
+                        <div id="register-username" class="form-group{{ $errors->has('username') ? ' has-error' : '' }}">
                             <label for="username" class="col-md-4 control-label">Username</label>
 
                             <div class="col-md-6">
                                 <input id="username" type="text" class="form-control" name="username" value="{{ old('username') }}" placeholder="Choose username" required autofocus>
-                                <span class="help-block"><strong id="username-error"></strong></span>
-
-                                @if ($errors->has('username'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('username') }}</strong>
-                                    </span>
-                                @endif
+                                <span class="help-block">
+                                    <strong id="username-error">{{ $errors->has('username') ? $errors->first('username') : '' }}</strong>
+                                </span>
                             </div>
                         </div>
 
@@ -71,13 +67,9 @@ $(document).ready(function() {
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" placeholder="Enter email" required>
-                                <span class="help-block"><strong id="email-error"></strong></span>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
+                                <span class="help-block">
+                                    <strong id="email-error">{{ $errors->has('email') ? $errors->first('email') : '' }}</strong>
+                                </span>
                             </div>
                         </div>
 
@@ -86,13 +78,9 @@ $(document).ready(function() {
 
                             <div class="col-md-6">
                                 <input id="password" type="password" class="form-control" name="password" placeholder="Choose password" required>
-                                <span class="help-block"><strong id="password-error"></strong></span>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
+                                <span class="help-block">
+                                    <strong id="password-error">{{ $errors->has('password') ? $errors->first('password') : '' }}</strong>
+                                </span>
                             </div>
                         </div>
 

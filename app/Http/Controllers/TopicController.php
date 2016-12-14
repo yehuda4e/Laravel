@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
 use App\Topic;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -11,6 +10,7 @@ use Illuminate\Support\Facades\Redis;
 class TopicController extends Controller
 {
 	public function __construct() {
+        parent::__construct();
 		$this->middleware('auth', ['only' => ['comment', 'create']]);
 	}
 
@@ -74,7 +74,7 @@ class TopicController extends Controller
 
         $topic->comments()->create([
             'body'      => $request->comment,
-            'user_id'   => Auth::id()
+            'user_id'   => $this->user->id
         ]);
 
         // Every time someone post a comment, 
@@ -111,7 +111,7 @@ class TopicController extends Controller
         $topic = new Topic;
         $topic->subject = $request->subject;
         $topic->content = $request->content;
-        $topic->user_id = Auth::id();
+        $topic->user_id = $this->user->id;
         $topic->forum_id = $forumId;
         $topic->save();
 
