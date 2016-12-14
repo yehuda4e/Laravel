@@ -2,13 +2,29 @@
 
 @section('js')
 <script>
-$(document).ready(function() {
-	$textarea = '<textarea name="comment" id="comment" cols="20" rows="5" class="form-control" autofocus placeholder="enter a comment">{{ old('comment') }}</textarea>';
-	$('#comment').on('focus', function() {
-		$('#comment').replaceWith($textarea);
-		$('#comment').focus();
-	});
-});
+// $(function() {
+// 	$('#comment').on('focus', function() {
+// 		var textarea = '<textarea name="comment" id="comment" cols="20" rows="5" class="form-control" autofocus placeholder="enter a comment" required>{{ old('comment') }}</textarea>';
+// 		$('#comment').replaceWith(textarea);
+// 		$('#comment').focus();
+// 	});
+// 	$('#commentForm').submit(function(e) {
+// 		e.preventDefault();
+
+// 		$.ajax({
+// 			url: '/article/{{ $article->id }}/comment',
+// 			type: 'POST',
+// 			data: $('#commentForm').serialize(),
+// 			success: function(data) {
+// 				var vv = $('#commentForm').serialize();
+// 				alert(vv.content);
+// 			},
+// 			error: function(data) {
+// 				console.log(data.responseText);
+// 			}
+// 		});
+// 	});
+// });
 
 </script>
 @stop
@@ -35,7 +51,7 @@ $(document).ready(function() {
 
 		<div class="panel panel-info" id="comments">
 			<div class="panel-heading">comments</div>
-			<ul class="list-group">
+			<ul class="list-group" id="cs">
 			@foreach ($article->comments()->latest()->get() as $comment)
 				<li class="list-group-item">
 					<div class="row">
@@ -54,9 +70,9 @@ $(document).ready(function() {
 			@if (Auth::guest())
 				<strong>You need to <a href="{{ route('login') }}">log in</a> to comment.</strong>
 			@else
-				<form method="POST" action="/article/{{ $article->id }}/comment">
+				<form method="POST" id="commentForm" action="/article/{{ $article->id }}/comment">
 					{{ csrf_field() }}
-					<input type="text" name="comment" id="comment" class="form-control" placeholder="Enter a comment">
+					<input type="text" name="comment" id="comment" class="form-control" placeholder="Enter a comment" required>
 					<button class="btn btn-primary">Comment</button>
 				</form>
 			@endif
