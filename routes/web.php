@@ -4,6 +4,8 @@ Auth::routes();
 
 Route::get('/', 'ArticleController@index');
 
+Route::get('search', 'SearchController@results');
+
 Route::get('user/settings', 'UserController@general');
 Route::patch('user/settings', 'UserController@update');
 Route::get('user/settings/avatar', 'UserController@avatar');

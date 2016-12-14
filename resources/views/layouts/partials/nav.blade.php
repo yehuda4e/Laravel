@@ -17,6 +17,13 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="{{ url('forum') }}">Forum</a></li>
+
+                        <form action="/search" method="GET" class="navbar-form navbar-right">
+                            <div class="form-group">
+                                <input type="search" name="q" id="q" class="form-control" placeholder="Find Users...">
+                                <button class="btn btn-primary">Search</button>
+                            </div>
+                        </form>
                     </ul>                    
                 </div>
 
