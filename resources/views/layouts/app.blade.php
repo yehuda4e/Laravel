@@ -21,6 +21,7 @@
     <div id="app">
         @include('layouts.partials.nav')
         <div class="container">
+            @include('layouts.partials.alert')
             @yield('content')
         </div>
     </div>
