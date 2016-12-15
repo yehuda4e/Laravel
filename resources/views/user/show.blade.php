@@ -39,7 +39,6 @@
                         	<a href="#comments" aria-controls="comments" role="tab" data-toggle="tab">Comments <span class="badge">{{ $user->comments->count() }}</span></a>
                         </li>
                       </ul>
-                      
                        <ul class="nav  navbar-nav navbar-nav-pro navbar-right">
                        @if($user->facebook)
                         <li><a href="http://facebook.com/{{ $user->facebook }}"><i class="fa fa-facebook"></i></a></li>
@@ -50,8 +49,16 @@
                        @if($user->google)
                         <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
                        @endif
+                        @if (Auth::user()->hasFriendRequestPending($user))
+                        <li><a><button class="btn btn-nav-pro"><i class="fa fa-user-plus"></i> Waiting to accept</button></a></li>
+                        @elseif (Auth::user()->hasFriendRequestReceived($user))
+                        <li><a href="{{ url('user/accept/'.$user->username) }}"><button class="btn btn-nav-pro"><i class="fa fa-user-plus"></i> Accept your friend</button></a></li>
+                        @elseif (Auth::user()->isFriendWith($user))
+                        <li><a><button class="btn btn-nav-pro"><i class="fa fa-user"></i> You friends</button></a></li>
+                        @elseif (Auth::id() !== $user->id)
+                        <li><a href="{{ url('user/add/'.$user->username) }}"><button class="btn btn-nav-pro"><i class="fa fa-user-plus"></i> Add friend</button></a></li>
+                        @endif
                         <li><a><button class="btn btn-nav-pro"><i class="fa fa-envelope"></i> Send message</button></a></li>
-                        <li><a><button class="btn btn-nav-pro"><i class="fa fa-user-plus"></i> Add friend</button></a></li>
                       </ul>
                     </div><!-- /.navbar-collapse -->
 			</nav>
@@ -61,6 +68,7 @@
 <div class="row">
 	<div class="col-md-9">
 	@if (Auth::id() === $user->id)
+		<!-- Status form -->
 		<form>
 			{{ csrf_field() }}
 			<label for="status">Status</label>
@@ -102,6 +110,7 @@
 		</div>			
 	</div>	
 	<div class="col-md-3">
+		<!-- About -->
 		<div class="panel panel-default">
 		  <div class="panel-heading">
 		    <h3 class="panel-title"><i class="fa fa-desktop"></i> About</h3>
@@ -119,12 +128,22 @@
 			@endif
 			</ul>
 		</div>
+		<!-- Friends -->
 		<div class="panel panel-default">
-		  <div class="panel-heading">
-		    <h3 class="panel-title"><i class="fa fa-users"></i> Friends</h3>
-		  </div>
-			<ul class="list-group">
-			</ul>
+			<div class="panel-heading">
+			   <h3 class="panel-title"><i class="fa fa-users"></i> Friends</h3>
+			</div>
+			<div class="panel-body">
+				<div class="col-md-12">
+				@if ($user->friends()->count())
+			  		@foreach ($user->friends() as $friend)
+						{!! $friend->profile($friend->getAvatar('', 'width:64px')) !!}
+					@endforeach
+				@else
+					<p>No friends</p>
+				@endif
+				</div>			
+			</div>
 		</div>			
 	</div>
 </div>

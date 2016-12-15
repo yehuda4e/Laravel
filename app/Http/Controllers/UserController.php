@@ -23,6 +23,47 @@ class UserController extends Controller
     	return view('user.show', compact('user'));
     }
 
+    public function add($username) {
+        $user = User::whereUsername($username)->first();
+        if (!$user) {
+            return redirect('/')->with('info', 'User not found.');
+        }
+
+        if ($this->user->hasFriendRequestPending($user) || $user->hasFriendRequestPending($this->user)) {
+            return redirect('/')->with('info', 'Friend request already pending.');
+        }
+
+        if ($this->user->isFriendWith($user)) {
+            return redirect('/')->with('info', 'Your already friends');
+        }
+
+        if ($user->id === $this->user->id) {
+            return redirect('/')->with('info', 'You can\'t send friend request to yourself.');
+        }
+
+        $this->user->addFriend($user);
+        return back()->with('info', 'Friend request sent.');
+    }
+
+    public function acceptFriend($username) {
+        $user = User::whereUsername($username)->first();
+
+        if (!$user) {
+            return redirect('/')->with('info', 'User not found.');
+        }
+
+        if (!$this->user->hasFriendRequestReceived($user)) {
+            return back();
+        }
+
+        $this->user->acceptFriendRequest($user);
+        return back()->with('info', 'Friend request accepted.');       
+    }
+
+    public function cancelFriendRequest($username) {
+        
+    }
+
     /**
      * Display the general settings form.
      * 

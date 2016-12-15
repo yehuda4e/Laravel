@@ -14,6 +14,8 @@ Route::get('user/settings/password', 'UserController@password');
 Route::patch('user/settings/password', 'UserController@updatePassword');
 Route::get('user/settings/signature', 'UserController@signature');
 Route::patch('user/settings/signature', 'UserController@updateSign');
+Route::get('user/add/{user}', 'UserController@add');
+Route::get('user/accept/{user}', 'UserController@acceptFriend');
 Route::get('user/{user}/{username?}', 'UserController@show');
 
 Route::get('category/{category}/{name?}', 'ForumCategoryController@show');

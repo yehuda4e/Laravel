@@ -42,6 +42,80 @@ class User extends Authenticatable
     }
 
     /**
+     * Show all my friends and friend request.
+     * 
+     * @return Illuminate\Database\Eloquent\belongsToMany
+     */
+    public function friendsOfMine() {
+        return $this->belongsToMany(User::class, 'friends', 'friend_id', 'user_id');
+    }
+
+    /**
+     * Show all the friends and friend request of choosen user.
+     * 
+     * @return Illuminate\Database\Eloquent\belongsToMany
+     */
+    public function friendsOf() {
+        return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id');
+    }
+
+    /**
+     * Show the accepted user requests.
+     * 
+     * @return Illuminate\Database\Eloquent\belongsToMany
+     */
+    public function friends() {
+        return $this->friendsOfMine()->wherePivot('accepted', true)->get()->merge($this->friendsOf()->wherePivot('accepted', true)->get());
+    }   
+
+    /**
+     * Show my wainting request.
+     * 
+     * @return Illuminate\Database\Eloquent\belongsToMany
+     */
+    public function friendRequests() {
+        return $this->friendsOfMine()->whereAccepted(false)->get();
+    }
+
+
+    public function friendRequestsPending() {
+        return $this->friendsOf()->where('accepted', false)->get();
+    }
+
+    /**
+     * 
+     * @param  User    $user [description]
+     * @return boolean       [description]
+     */
+    public function hasFriendRequestPending(User $user) {
+        return (bool) $this->friendRequestsPending()->where('id', $user->id)->count();
+    }
+
+    public function hasFriendRequestReceived(User $user) {
+        return (bool) $this->friendRequests()->where('id', $user->id)->count();
+    }
+
+    public function addFriend(User $user)
+    {
+        $this->friendsOf()->attach($user->id);
+    }    
+
+    public function acceptFriendRequest(User $user) {
+        return $this->friendRequests()->where('id', $user->id)->first()->pivot->update([
+            'accepted' => true,
+        ]);
+    }
+
+    public function isFriendWith(User $user) {
+        return (bool) $this->friends()->where('id', $user->id)->count();
+    }
+
+
+
+
+
+
+    /**
      * Check if the user has admin panel authorization.
      * 
      * @return boolean 
@@ -50,7 +124,7 @@ class User extends Authenticatable
         return (json_decode($this->group->permissions))->admin;
     }
 
-    public function can($index, $key = 'null') {
+    public function can($index, $key = null) {
         $permission = json_decode($this->group->permissions);
 
         if (isset($key) && isset($index)) {
@@ -69,11 +143,9 @@ class User extends Authenticatable
         if ($this->first_name && $this->last_name) {
             return $this->first_name.' '.$this->last_name;
         }
-        elseif ($this->first_name) {
+
+        if ($this->first_name) {
             return $this->first_name;
-        }
-        elseif ($this->last_name) {
-            return $this->last_name;
         }
 
         return false;
@@ -81,24 +153,27 @@ class User extends Authenticatable
 
     /**
      * Display link to user profile with the group style.
-     * 
+     *
+     * @param string $username [for custom text or profile img]
      * @return string
      */
-    public function profile() {
-        return '<a href="'.url('user/'.$this->id.'/'.$this->username).'" style="color:'.$this->group->color.'">'.$this->username.'</a>';
+    public function profile($username = null) {
+        return '<a href="'.url('user/'.$this->id.'/'.$this->username).'" style="color:'.$this->group->color.'">'.($username ?? $this->username).'</a>';
     }
 
     /**
      * Display the user avatar.
      * 
      * @param  string $classes [add classes to the img if necessary]
+     * @param  string $style [custum style]
      * @return string          [avatar images]
      */
-    public function getAvatar($classes = '') {
+    public function getAvatar($classes = '', $style = '') {
         // If the user havent set yet his profile picure, then we use his Gravatar avatar. 
         // And if he dosnt have a Gravatar avatar, then Gravatar genarate him a new one.
         return ($this->avatar) ?
-            '<img src="'.$this->avatar.'" alt="'.$this->username.'" class="'.$classes.'">' :
-            '<img src="https://www.gravatar.com/avatar/'.md5($this->email).'?d=retro&s=160" alt="'.$this->username.'" class="'.$classes.'">';        
+            '<img src="'.$this->avatar.'" alt="'.$this->username.'" class="'.$classes.'" style="'.$style.'">' :
+            '<img src="https://www.gravatar.com/avatar/'.md5($this->email).'?d=retro&s=160" alt="'.$this->username.'" class="'.$classes.'" style="'.$style.'">';        
     }
+
 }

@@ -41,28 +41,43 @@
                             <li><a href="{{ url('/register') }}">Register</a></li>
                         @else
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expended="false">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     <i class="fa fa-2x fa-envelope-o"></i>
                                 </a> 
 
                                 <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                        messages
-                                    </li>
+                                    <li><a>messages</a></li>
                                 </ul>                               
                             </li>
 
                             <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expended="false">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                     <i class="fa fa-2x fa-bell-o"></i>
                                 </a> 
 
                                 <ul class="dropdown-menu" role="menu">
-                                    <li>
-                                        notifications
-                                    </li>
+                                    <li><a>notifications</a></li>
                                 </ul>                               
                             </li>
+
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
+                                    <i class="fa fa-2x fa-user-plus"></i>
+                                </a> 
+
+                                <ul class="dropdown-menu" role="menu" style="width: 500px">
+                                @if (Auth::user()->friendRequests()->count())
+                                    @foreach (Auth::user()->friendRequests() as $friend)
+                                        <li>
+                                            {!! $friend->profile() !!} sent you friendship request.
+                                            <a href="#" class="btn btn-default col-md-3 text-right" style="float:right;margin-top: -25px"><i class="fa fa-user-plus"></i> accept</a>
+                                        </li>
+                                    @endforeach
+                                @else
+                                    <li><a>You have no friend requests</a></li>
+                                @endif    
+                                </ul>                           
+                            </li>                            
 
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -85,7 +100,6 @@
                                     </li>
                                 </ul>
                             </li>
-
                         @endif
                     </ul>
                 </div>
