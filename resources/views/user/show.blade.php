@@ -1,5 +1,34 @@
 @extends('layouts.app')
 
+@section('js')
+<script>
+$(function() {
+	
+	$('#cancel').hover(function() {
+		$('#cancel').html('<i class="fa fa-user-times"></i> Cancel friend request');
+	}, function() {
+		$('#cancel').html('<i class="fa fa-user-plus"></i> Waiting to accept');
+	});	
+
+
+	$('#unfriend').hover(function() {
+		$('#unfriend').html('<i class="fa fa-user-times"></i> Unfriend me');
+	}, function() {
+		$('#unfriend').html('<i class="fa fa-user"></i> You friends');
+	});
+
+
+	$('#unfriend').on('click', function() {
+		var sure = confirm('Are you sure?');
+
+		if (!sure) {
+			return false;
+		}
+	});
+});
+</script>
+@stop
+
 @section('content')
 <div class="row">
     <div class="col-md-12">
@@ -50,11 +79,11 @@
                         <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
                        @endif
                         @if (Auth::user()->hasFriendRequestPending($user))
-                        <li><a><button class="btn btn-nav-pro"><i class="fa fa-user-plus"></i> Waiting to accept</button></a></li>
+                        <li><a href="{{ url('user/'.$user->username.'/cancel') }}"><button class="btn btn-nav-pro" title="Cancel friend request" id="cancel"><i class="fa fa-user-plus"></i> Waiting to accept</button></a></li>
                         @elseif (Auth::user()->hasFriendRequestReceived($user))
-                        <li><a href="{{ url('user/accept/'.$user->username) }}"><button class="btn btn-nav-pro"><i class="fa fa-user-plus"></i> Accept your friend</button></a></li>
+                        <li><a href="{{ url('user/'.$user->username.'/accept') }}"><button class="btn btn-nav-pro"><i class="fa fa-user-plus"></i> Accept your friend</button></a></li>
                         @elseif (Auth::user()->isFriendWith($user))
-                        <li><a><button class="btn btn-nav-pro"><i class="fa fa-user"></i> You friends</button></a></li>
+                        <li><a href="{{ url('user/'.$user->username.'/cancel') }}"><button class="btn btn-nav-pro" id="unfriend"><i class="fa fa-user"></i> You friends</button></a></li>
                         @elseif (Auth::id() !== $user->id)
                         <li><a href="{{ url('user/add/'.$user->username) }}"><button class="btn btn-nav-pro"><i class="fa fa-user-plus"></i> Add friend</button></a></li>
                         @endif
@@ -69,11 +98,20 @@
 	<div class="col-md-9">
 	@if (Auth::id() === $user->id)
 		<!-- Status form -->
-		<form>
+		<form method="POST" action="{{ url('status') }}">
 			{{ csrf_field() }}
-			<label for="status">Status</label>
-			<textarea name="status" id="status" class="form-control" placeholder="Say something.."></textarea>
-			<button class="btn btn-info btn-sm">Post</button>
+			<div class="form-group{{ $errors->has('status') ? ' has-error' : '' }}">
+				<label for="status">Status</label>
+				<textarea name="status" id="status" class="form-control" placeholder="Say something.."></textarea>
+				@if ($errors->has('status'))
+					<span class="help-block">
+						{{ $errors->first('status') }}
+					</span>
+				@endif
+			</div>
+			<div class="form-group">
+				<button class="btn btn-info btn-sm">Update Status</button>
+			</div>
 		</form>
 		<br>
 	@endif
@@ -83,7 +121,68 @@
 			  <div class="tab-content">
 			  	<!-- Timeline -->
 			    <div role="tabpanel" class="tab-pane fade in active" id="timeline">
-			    	timeline
+			    	<h2>{{ $user->username }}'s Activity</h2>
+			    	@if ($user->statuses->count())
+						@foreach ($user->statuses()->latest()->get() as $status)
+						<div class="media">
+						    <a class="pull-left">
+						    	{!! $status->user->getAvatar('media-object', 'width:44px') !!}
+						    </a>
+						    <div class="media-body">
+						        <h4 class="media-heading">{!! $status->user->profile() !!}</h4>
+						        <p>{{ $status->content }}</p>
+						        <ul class="list-inline">
+						            <li>{{ $status->created_at->diffForHumans() }}</li>
+						            <li><a href="#">Like</a></li>
+						            <li>10 likes</li>
+						        </ul>
+
+								@foreach ($status->comments as $comment)
+						        <div class="media">
+						            <a class="pull-left">
+						                {!! $comment->user->getAvatar('', 'width:44px') !!}
+						            </a>
+						            <div class="media-body">
+						                <h5 class="media-heading">{!! $comment->user->profile() !!}</h5>
+						                <p>{{ $comment->body }}</p>
+						                <ul class="list-inline">
+						                    <li>{{ $comment->created_at->diffForHumans() }}</li>
+						                    <li><a href="#">Like</a></li>
+						                    <li>4 likes</li>
+						                </ul>
+						            </div>
+						        </div>
+								@endforeach
+
+						        <form role="form" action="{{ url('status/'.$status->id.'/comment') }}" method="POST">
+						        	{{ csrf_field() }}
+						            <div class="form-group{{ $errors->has('body-'.$status->id) ? ' has-error' : '' }}">
+						                <textarea name="body-{{ $status->id }}" class="form-control" rows="2" placeholder="Reply to this status">{{ old('body') }}</textarea>
+						                @if ($errors->has('body-'.$status->id))
+						                	<span class="help-block">
+						                		{{ $errors->first('body-'.$status->id) }}
+						                	</span>
+						                @endif
+						            </div>
+						            <input type="submit" value="Reply" class="btn btn-default btn-sm">
+						        </form>
+						    </div>
+						</div>
+						@endforeach			    	
+			    	@endif
+			    </div>
+			    <!-- Friends -->
+			    <div role="tabpanel" class="tab-pane fade" id="friends">
+			    	<div class="col-md-12">
+			    	@if ($user->friends()->count())
+			    		<h2>{{ $user->username }}'s friends</h2>
+			    		@foreach ($user->friends() as $friend)
+			    			{!! $friend->profile($friend->getAvatar()) !!}
+			    		@endforeach
+			    	@else
+			    		<p>{{ $user->username }} has no friends.</p>
+			    	@endif
+			    	</div>
 			    </div>
 			    <!-- Topics -->
 			    <div role="tabpanel" class="tab-pane fade" id="topics">
@@ -131,12 +230,12 @@
 		<!-- Friends -->
 		<div class="panel panel-default">
 			<div class="panel-heading">
-			   <h3 class="panel-title"><i class="fa fa-users"></i> Friends</h3>
+			   <h3 class="panel-title"><i class="fa fa-users"></i> <a href="#friends" aria-controls="friends" role="tab" data-toggle="tab">{{ $user->friends()->count() }} Friends</a></h3>
 			</div>
 			<div class="panel-body">
 				<div class="col-md-12">
 				@if ($user->friends()->count())
-			  		@foreach ($user->friends() as $friend)
+			  		@foreach ($user->friends()->take(10) as $friend)
 						{!! $friend->profile($friend->getAvatar('', 'width:64px')) !!}
 					@endforeach
 				@else
