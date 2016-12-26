@@ -1,5 +1,12 @@
 @extends('layouts.app')
 
+@section('js')
+<script src="/js/ckeditor/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('content');
+</script>
+@stop
+
 @section('content')
 <div class="row">
 	<div class="col-md-12">
@@ -27,7 +34,7 @@
                         <label for="content" class="col-md-1 control-label">Content</label>
 
                         <div class="col-md-10">
-                        	<textarea name="content" id="content" cols="30" rows="10" class="form-control">{{ old('content') }}</textarea>
+                        	<textarea name="content" id="content" rows="50" class="form-control">{{ old('content') }}</textarea>
 
                             @if ($errors->has('content'))
                                 <span class="help-block">

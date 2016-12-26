@@ -15,8 +15,17 @@ Route::patch('user/settings/password', 'UserController@updatePassword');
 Route::get('user/settings/signature', 'UserController@signature');
 Route::patch('user/settings/signature', 'UserController@updateSign');
 Route::get('user/add/{user}', 'UserController@add');
-Route::get('user/accept/{user}', 'UserController@acceptFriend');
+Route::get('user/{user}/accept', 'UserController@acceptFriend');
+Route::get('user/{user}/cancel', 'UserController@cancelFriendRequest');
 Route::get('user/{user}/{username?}', 'UserController@show');
+
+Route::get('timeline', 'TimelineController@index');
+Route::post('status', 'StatusController@store');
+Route::post('status/{status}/comment', 'StatusController@comment');
+Route::get('status/{status}/like', 'StatusController@like');
+Route::get('status/{status}/unlike', 'StatusController@unlike');
+Route::get('comment/{comment}/like', 'CommentController@like');
+Route::get('comment/{comment}/unlike', 'CommentController@unlike');
 
 Route::get('category/{category}/{name?}', 'ForumCategoryController@show');
 
@@ -25,7 +34,7 @@ Route::get('forum/{forum}/{name?}', 'ForumController@show');
 
 Route::get('topic/{forum}/create', 'TopicController@create');
 Route::post('topic/{forum}/store', 'TopicController@store');
-Route::get('topic/{topic}/{subject?}', 'TopicController@show');
+Route::get('topic/{topic}/{subject?}', 'TopicController@show')->name('topic.show');
 Route::post('topic/{topic}/comment', 'TopicController@comment');
 Route::post('topic/{topic}/change', 'TopicController@changeState');
 

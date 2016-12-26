@@ -3,11 +3,27 @@
 @section('js')
 <script>
 $(function() {
-	
+	function unfriend(id) {
+		$.ajax({
+			url: "/user/{{ $user->username }}/cancel",
+			type: 'GET',
+			success: function(data) {
+				$(id).html('<i class="fa fa-user-plus"></i> Add friend');
+				$(id).attr('id', '');
+			},
+			error: function(data) {
+				console.log('error '+data.info);
+			}
+
+		});
+	}
+
 	$('#cancel').hover(function() {
 		$('#cancel').html('<i class="fa fa-user-times"></i> Cancel friend request');
 	}, function() {
 		$('#cancel').html('<i class="fa fa-user-plus"></i> Waiting to accept');
+	}).click(function() {
+		unfriend('#cancel');
 	});	
 
 
@@ -15,15 +31,8 @@ $(function() {
 		$('#unfriend').html('<i class="fa fa-user-times"></i> Unfriend me');
 	}, function() {
 		$('#unfriend').html('<i class="fa fa-user"></i> You friends');
-	});
-
-
-	$('#unfriend').on('click', function() {
-		var sure = confirm('Are you sure?');
-
-		if (!sure) {
-			return false;
-		}
+	}).click(function() {
+		unfriend('#unfriend');
 	});
 });
 </script>
@@ -79,11 +88,11 @@ $(function() {
                         <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
                        @endif
                         @if (Auth::user()->hasFriendRequestPending($user))
-                        <li><a href="{{ url('user/'.$user->username.'/cancel') }}"><button class="btn btn-nav-pro" title="Cancel friend request" id="cancel"><i class="fa fa-user-plus"></i> Waiting to accept</button></a></li>
+                        <li><a><button class="btn btn-nav-pro" title="Cancel friend request" id="cancel"><i class="fa fa-user-plus"></i> Waiting to accept</button></a></li>
                         @elseif (Auth::user()->hasFriendRequestReceived($user))
                         <li><a href="{{ url('user/'.$user->username.'/accept') }}"><button class="btn btn-nav-pro"><i class="fa fa-user-plus"></i> Accept your friend</button></a></li>
                         @elseif (Auth::user()->isFriendWith($user))
-                        <li><a href="{{ url('user/'.$user->username.'/cancel') }}"><button class="btn btn-nav-pro" id="unfriend"><i class="fa fa-user"></i> You friends</button></a></li>
+                        <li><a><button class="btn btn-nav-pro" id="unfriend"><i class="fa fa-user"></i> You friends</button></a></li>
                         @elseif (Auth::id() !== $user->id)
                         <li><a href="{{ url('user/add/'.$user->username) }}"><button class="btn btn-nav-pro"><i class="fa fa-user-plus"></i> Add friend</button></a></li>
                         @endif

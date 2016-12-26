@@ -2,12 +2,13 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, Friendship;
 
     /**
      * This is the attributes that are not mass assimante.
@@ -41,78 +42,17 @@ class User extends Authenticatable
         return $this->hasMany(Article::class);
     }
 
-    /**
-     * Show all my friends and friend request.
-     * 
-     * @return Illuminate\Database\Eloquent\belongsToMany
-     */
-    public function friendsOfMine() {
-        return $this->belongsToMany(User::class, 'friends', 'friend_id', 'user_id');
+    public function statuses() {
+        return $this->hasMany(Status::class);
     }
 
-    /**
-     * Show all the friends and friend request of choosen user.
-     * 
-     * @return Illuminate\Database\Eloquent\belongsToMany
-     */
-    public function friendsOf() {
-        return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id');
+    public function likes() {
+        return $this->hasMany(Like::class);
     }
 
-    /**
-     * Show the accepted user requests.
-     * 
-     * @return Illuminate\Database\Eloquent\belongsToMany
-     */
-    public function friends() {
-        return $this->friendsOfMine()->wherePivot('accepted', true)->get()->merge($this->friendsOf()->wherePivot('accepted', true)->get());
-    }   
-
-    /**
-     * Show my wainting request.
-     * 
-     * @return Illuminate\Database\Eloquent\belongsToMany
-     */
-    public function friendRequests() {
-        return $this->friendsOfMine()->whereAccepted(false)->get();
+    public function hasLiked(Model $model) {
+        return (bool) $model->likes->where('user_id', $this->id)->count();
     }
-
-
-    public function friendRequestsPending() {
-        return $this->friendsOf()->where('accepted', false)->get();
-    }
-
-    /**
-     * 
-     * @param  User    $user [description]
-     * @return boolean       [description]
-     */
-    public function hasFriendRequestPending(User $user) {
-        return (bool) $this->friendRequestsPending()->where('id', $user->id)->count();
-    }
-
-    public function hasFriendRequestReceived(User $user) {
-        return (bool) $this->friendRequests()->where('id', $user->id)->count();
-    }
-
-    public function addFriend(User $user)
-    {
-        $this->friendsOf()->attach($user->id);
-    }    
-
-    public function acceptFriendRequest(User $user) {
-        return $this->friendRequests()->where('id', $user->id)->first()->pivot->update([
-            'accepted' => true,
-        ]);
-    }
-
-    public function isFriendWith(User $user) {
-        return (bool) $this->friends()->where('id', $user->id)->count();
-    }
-
-
-
-
 
 
     /**

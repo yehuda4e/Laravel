@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+<ol class="breadcrumb">
+  <li><a href="{{ url('category/'.$forum->cat->id.'/'.urlencode($forum->cat->name)) }}">{{ $forum->cat->name }}</a></li>
+  <li class="active">{{ $forum->name }}</li>
+</ol>
+
 <div class="row">
 	<div class="col-md-12">
 		<div class="panel panel-default">

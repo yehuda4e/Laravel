@@ -104,7 +104,7 @@ class TopicController extends Controller
      */
     public function store($forumId, Request $request) {
         $this->validate($request, [
-            'subject'   => 'required|min:3|max:30',
+            'subject'   => 'required|min:3|max:255',
             'content'   => 'required|min:3'
         ]);
 
@@ -115,7 +115,7 @@ class TopicController extends Controller
         $topic->forum_id = $forumId;
         $topic->save();
 
-        return redirect('topic/'.$topic->id.'/'.$topic->subject);
+        return redirect()->route('topic.show', $topic);
     }
 
     /**

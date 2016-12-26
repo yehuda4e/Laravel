@@ -1,5 +1,12 @@
 @extends('layouts.app')
 
+@section('js')
+<script src="/js/ckeditor/ckeditor.js"></script>
+<script>
+CKEDITOR.replace( 'editor1' );
+</script>
+@stop
+
 @section('content')
 <ol class="breadcrumb">
   <li><a href="{{ url('category/'.$topic->forum->cat->id.'/'.urlencode($topic->forum->cat->name)) }}">{{ $topic->forum->cat->name }}</a></li>
@@ -23,7 +30,7 @@
 						</div>
 						<div class="row">
 							<div class="col-md-12">
-								{{ $topic->content }}
+								{!! $topic->content !!}
 							</div>
 						</div>
 						@if ($topic->user->signature)
@@ -96,11 +103,14 @@
 				<form method="POST" action="/topic/{{ $topic->id }}/comment">
 					{{ csrf_field() }}
 					<textarea class="form-control" name="comment" id="comment" placeholder="enter a comment">{{ old('comment') }}</textarea>
-					<button class="btn btn-primary">Post</button>
+					<button class="btn btn-primary">Comment</button>
 				</form>
 			@endif
 			</div>	
 		</div>
+
+		@if (Auth::user()->isAdmin())
+		<!-- Moderator options -->
 		<div class="panel panel-default">
 			<div class="panel-heading"><strong>Moderator Options</strong></div>
 			<div class="panel-body">
@@ -119,7 +129,8 @@
 					<button class="btn btn-warning">Excute</button>
 				</form>
 			</div>	
-		</div>			
+		</div>	
+		@endif		
 	</div>
 </div>
 @stop

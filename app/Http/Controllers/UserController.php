@@ -61,7 +61,14 @@ class UserController extends Controller
     }
 
     public function cancelFriendRequest($username) {
-        
+        $user = User::whereUsername($username)->first();
+
+        if (!$user) {
+            return redirect('/')->with('info', 'User not found.');
+        }
+
+        $this->user->cancelFriendRequest($user);
+        return back()->with('info', 'Friend request canceled.');
     }
 
     /**

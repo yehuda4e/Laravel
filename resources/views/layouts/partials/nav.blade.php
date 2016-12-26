@@ -17,7 +17,9 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="{{ url('forum') }}">Forum</a></li>
-
+                        @if (Auth::check())
+                        <li><a href="{{ url('timeline') }}">Timeline</a></li>
+                        @endif
                         <form action="/search" method="GET" class="navbar-form navbar-right">
                             <div class="form-group">
                                 <input type="search" name="q" id="q" class="form-control" placeholder="Find Users...">
@@ -70,7 +72,7 @@
                                     @foreach (Auth::user()->friendRequests() as $friend)
                                         <li>
                                             {!! $friend->profile() !!} sent you friendship request.
-                                            <a href="#" class="btn btn-default col-md-3 text-right" style="float:right;margin-top: -25px"><i class="fa fa-user-plus"></i> accept</a>
+                                            <a href="{{ url('user/'.$friend->username.'/accept') }}" class="btn btn-default col-md-3 text-right" style="float:right;margin-top: -25px"><i class="fa fa-user-plus"></i> accept</a>
                                         </li>
                                     @endforeach
                                 @else

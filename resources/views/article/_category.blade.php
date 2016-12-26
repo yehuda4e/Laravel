@@ -11,7 +11,7 @@
 		<div class="panel-heading">5 Last articles</div>
 		@foreach($articles as $article)
 		<ul class="list-group">
-			<li class="list-group-item"><a href="{{ url('article/cat/'.$article->slug) }}">{{ $article->subject }}</a></li>
+			<li class="list-group-item"><a href="{{ url(urlencode($article->slug)) }}">{{ $article->subject }}</a></li>
 		</ul>
 		@endforeach			
 	</div>
