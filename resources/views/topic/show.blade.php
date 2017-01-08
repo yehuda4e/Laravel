@@ -30,7 +30,12 @@ CKEDITOR.replace( 'editor1' );
 						</div>
 						<div class="row">
 							<div class="col-md-12">
-								{!! $topic->content !!}
+								{!!  ($topic->edits->count()) ? $topic->edits()->lastEdit()->body : $topic->content !!}
+								@if ($topic->edits->count())
+								<p>
+									<small><i>Last edit: {{ $topic->edits()->lastEdit()->created_at->diffForHumans() }} by {!! $topic->edits()->lastEdit()->user->profile() !!}</i></small>
+								</p>
+								@endif
 							</div>
 						</div>
 						@if ($topic->user->signature)
@@ -42,7 +47,7 @@ CKEDITOR.replace( 'editor1' );
 						</div>
 						@endif
 					</div>
-					<div class="col-md-2 text-center" style="border-left: 2px solid #eee;margin-top:-15px;margin-bottom: -15px;padding-top: 10px">
+					<div class="col-md-2 text-center" style="border-left: 2px solid #eee;margin-top:-15px;padding-top: 10px">
 						{!! $topic->user->getAvatar('img-thumbnail') !!}
 						{!! $topic->user->profile() !!}<br>
 						<small>{{ $topic->user->title }}</small><br>
@@ -67,7 +72,7 @@ CKEDITOR.replace( 'editor1' );
 						</div>
 						<div class="row">
 							<div class="col-md-12">
-								{{ $comment->body }}
+								{!! $comment->body !!}
 							</div>
 						</div>
 						@if ($comment->user->signature)
@@ -109,7 +114,7 @@ CKEDITOR.replace( 'editor1' );
 			</div>	
 		</div>
 
-		@if (Auth::user()->isAdmin())
+		@if (auth()->check() && auth()->user()->isAdmin())
 		<!-- Moderator options -->
 		<div class="panel panel-default">
 			<div class="panel-heading"><strong>Moderator Options</strong></div>

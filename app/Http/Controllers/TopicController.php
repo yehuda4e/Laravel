@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Notifications\ResourceCommented;
 use App\Topic;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -81,6 +82,10 @@ class TopicController extends Controller
         // update the topic 'updated_at' column for sorting the last comment on the main forum page.
         $topic->updated_at = Carbon::now();
         $topic->save();
+
+        if ($topic->user->id !== auth()->id()) {
+            $topic->user->notify(new ResourceCommented($topic));
+        }
 
     	return back();
     }

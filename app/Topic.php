@@ -22,6 +22,10 @@ class Topic extends Model
     	return $this->morphMany(Comment::class, 'commentable');
     }
 
+    public function edits() {
+        return $this->morphMany(Edit::class, 'editable');
+    }
+
 /*    public function latest() {
         return ($this->comments->count() > 0) ? 'sdf' : '$this->path()';
     }*/

@@ -4,6 +4,7 @@
 <script src="/js/ckeditor/ckeditor.js"></script>
 <script>
     CKEDITOR.replace('content');
+    CKEDITOR.instances.content.setData( "{!! trim(old('content')) !!}" );
 </script>
 @stop
 
@@ -34,7 +35,7 @@
                         <label for="content" class="col-md-1 control-label">Content</label>
 
                         <div class="col-md-10">
-                        	<textarea name="content" id="content" rows="50" class="form-control">{{ old('content') }}</textarea>
+                        	<textarea name="content" id="content" rows="50" class="form-control"></textarea>
 
                             @if ($errors->has('content'))
                                 <span class="help-block">

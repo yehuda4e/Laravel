@@ -10,7 +10,7 @@ class ForumCategoryController extends Controller
 	/**
 	 * Show the forum category.
 	 * @param  ForumCategory $category
-	 * @return Illuminate\Foundation\Http\response                
+	 * @return Illuminate\Http\response                
 	 */
     public function show(ForumCategory $category) {
     	return view('forum.category', compact('category'));
