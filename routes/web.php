@@ -20,6 +20,7 @@ Route::get('user/{user}/cancel', 'UserController@cancelFriendRequest');
 Route::get('user/{user}/{username?}', 'UserController@show');
 
 Route::get('timeline', 'TimelineController@index');
+Route::get('status/{status}', 'StatusController@show');
 Route::post('status', 'StatusController@store');
 Route::post('status/{status}/comment', 'StatusController@comment');
 Route::get('status/{status}/like', 'StatusController@like');
